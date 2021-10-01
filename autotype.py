@@ -1,22 +1,37 @@
 from pynput.keyboard import Key, Controller
 import time
-
+import os
 keyboard = Controller()
-for i in range(10):
-    print("This app will start autotyping in",10 - i,"second(s).",end='\r')
+while True:
+    n = input("[__] Enter Time After Which Typing Should Start: ")
+    try:
+    	n = int(n)
+    	break
+    except Exceptiona as e:
+    	print("[!] Please Enter Right Input: Integet!")
+    	continue
+for i in range(n):
+    print("[*] This app will start autotyping in",n - i,"second(s).",end='\r')
     i-=1
     time.sleep(1)
-print("Autotyping has started. Please close this window to stop autotyping!")
 # Open text from text.txt file
-f = open('data.txt','r')
-typeString = f.read()
-f.close
 
+lst = os.listdir()
+# Check for file is there or not...
+if "data.txt" not in lst:
+    print("[!] 'data.txt' not found! Creating file...")
+    with open("data.txt", "w") as file_w:
+        file_w.write("Hello World!\nWelcome To AutoTyper")
+        print("[*] Done!")
+
+print("[*] Autotyping has started. Please close this window to stop autotyping!")
+
+with open('data.txt', 'r') as file_r:
+    typeString = file_r.read()
+    
 for char in typeString:
     if char == '\n':
         keyboard.type("\n")    
-        time.sleep(0.12)
     else:
-        keyboard.press(char)
-        keyboard.release(char)
-        time.sleep(0.12)
+        keyboard.type(char)    
+    time.sleep(0.03)
